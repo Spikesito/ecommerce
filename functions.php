@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 
  /* Ecrit dans une log dans le dossier courant
  *
@@ -33,4 +34,20 @@ function get_ip()
     ?? $_SERVER['REMOTE_ADDR']
     ?? '0.0.0.0';
   return $ip;
+}
+
+function fillCustomer() 
+{
+    // Instance
+    $faker = Faker\Factory::create('fr_FR');
+    for ($i = 0; $i <= 10; $i++) {
+        $sql = "insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
+            try {
+                $sth = $dbh->prepare($sql);
+                $sth->execute(array(":LastName"=>$faker->lastName,":FirstName"=>$faker->firstName,":PhoneNumber"=>$faker->phoneNumber, ":Email"=>$faker->email));
+                $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+            }
+    }
 }

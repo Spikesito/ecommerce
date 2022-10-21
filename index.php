@@ -10,16 +10,7 @@ $dbh=db_connect();
 
 
 
-// Instance
-$faker = Faker\Factory::create('fr_FR');
-
-// 'Lucy Cechtelar';
-echo $faker->name;
-
-// "426 Jordy Lodge Cartwrightshire, SC 88120-6700"
-echo $faker->address;
-
-// Récupère la liste des acteurs
+// Récupère la liste des customers
 $sql = 'select * from customer';
 try {
     $sth = $dbh->prepare($sql);
@@ -39,21 +30,22 @@ try {
 </head>
 <body>
 <?php
-if (count($rows)>0) {
-    echo '<table>';
-    echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
-    foreach ($rows as $row) {
-        echo '<tr>';
-        echo '<td>'.$row['LastName'].'</td>';
-        echo '<td>'.$row['FirstName'].'</td>';
-        echo '<td>'.$row['PhoneNumber'].'</td>';
-        echo '<td>'.$row['Email'].'</td>';
-        echo "</tr>";
-    }
-    echo "</table>";
-} else {
-    echo "<p>Rien à afficher</p>";
-}
+echo fillCustomer()
+// if (count($rows)>0) {
+//     echo '<table>';
+//     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
+//     foreach ($rows as $row) {
+//         echo '<tr>';
+//         echo '<td>'.$row['LastName'].'</td>';
+//         echo '<td>'.$row['FirstName'].'</td>';
+//         echo '<td>'.$row['PhoneNumber'].'</td>';
+//         echo '<td>'.$row['Email'].'</td>';
+//         echo "</tr>";
+//     }
+//     echo "</table>";
+// } else {
+//     echo "<p>Rien à afficher</p>";
+// }
 ?>
 </body>
 
