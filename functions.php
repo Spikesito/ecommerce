@@ -38,16 +38,26 @@ function get_ip()
 
 function fillCustomer() 
 {
-    // Instance
-    $faker = Faker\Factory::create('fr_FR');
-    for ($i = 0; $i <= 10; $i++) {
-        $sql = "insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
+  $dbh=db_connect();
+  $faker = Faker\Factory::create('fr_FR');
+    echo $faker->word;
+    for ($i = 0; $i <= 1000; $i++) {
+        $sql = "insert into category (Name) values (:Name)";
             try {
                 $sth = $dbh->prepare($sql);
-                $sth->execute(array(":LastName"=>$faker->lastName,":FirstName"=>$faker->firstName,":PhoneNumber"=>$faker->phoneNumber, ":Email"=>$faker->email));
-                $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+                $sth->execute(array(":Name"=>$faker->word));
             } catch (PDOException $e) {
                 die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
             }
     }
+    // Instance
+    // for ($i = 0; $i <= 10; $i++) {
+    //     $sql = "insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
+    //         try {
+    //             $sth = $dbh->prepare($sql);
+    //             $sth->execute(array(":LastName"=>$faker->lastName,":FirstName"=>$faker->firstName,":PhoneNumber"=>$faker->phoneNumber, ":Email"=>$faker->email));
+    //         } catch (PDOException $e) {
+    //             die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    //         }
+    // }
 }

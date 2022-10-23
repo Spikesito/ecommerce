@@ -30,7 +30,8 @@ try {
 </head>
 <body>
 <?php
-echo fillCustomer()
+    // Instance
+    fillCustomer();
 // if (count($rows)>0) {
 //     echo '<table>';
 //     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
