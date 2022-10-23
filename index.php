@@ -31,7 +31,9 @@ try {
 <body>
 <?php
     // Instance
-    fillCustomer();
+    $faker = Faker\Factory::create('fr_FR');
+    echo $faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg');
+    // fillCustomer();
 // if (count($rows)>0) {
 //     echo '<table>';
 //     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';

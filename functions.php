@@ -36,20 +36,94 @@ function get_ip()
   return $ip;
 }
 
+
+
+
+//FILL DATABASE functions
+
+//Function Used to generate Random Float
+function rand_float($st_num=0,$end_num=1,$mul=1000000)
+{
+if ($st_num>$end_num) return false;
+return mt_rand($st_num*$mul,$end_num*$mul)/$mul;
+}
+
+
+
+
+//Functions Used to generate each part of the DB
+
+//Insert One product
+function createProduct($dbh, $faker, $nbCategoryId)
+{
+    //Primary Key : ProductId
+  $sql = "insert into product (Name, Price, CreationDate, Supplier, Stock, CategoryId) values (:Name, :Price, :CreationDate, :Supplier, :Stock, :CategoryId)";
+  try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":Name"=>$faker->word,":Price"=>$faker->rand_float(1, 100),":CreationDate"=>$faker->date(),":Supplier"=>$faker->word,":Stock"=>random_int(1,100),":CategoryId"=>random_int(1, $nbCategoryId)));
+  } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+  }
+}
+
+//Create All Product's categories
+function createCategories($dbh, $faker)
+{
+    //Primary Key : CategoryId
+  for ($i = 0; $i <= 30; $i++) {
+    $sql = "insert into category (Name) values (:Name)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":Name"=>$faker->word));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
+}
+
+//
+function createPhotoP($dbh, $faker, $nbProductId)
+{
+  //Primary Key : PhotoId
+  $sql = "insert into photop (ProductId, Link) values (:ProductId, :Link)";
+      try {
+          $sth = $dbh->prepare($sql);
+          $sth->execute(array(":ProductId"=>random_int(1, $nbProductId), "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
+      } catch (PDOException $e) {
+          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
+}
+
+function createPhotoU($dbh, $faker, $nbCustomerId)
+{
+  //Primary Key : PhotoId
+  $sql = "insert into photou (CustomerId, Link) values (:CustomerId, :Link)";
+      try {
+          $sth = $dbh->prepare($sql);
+          $sth->execute(array(":CustomerId"=>random_int(1, $nbCustomerId), "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
+      } catch (PDOException $e) {
+          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
+}
+
+function createCommand($dbh, $faker, $customerId)
+{
+  for ($i = 0; $i <= 20; $i++) {
+    $sql = "insert into category (Name) values (:Name)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":Name"=>$faker->word));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
+}
+
 function fillCustomer() 
 {
   $dbh=db_connect();
   $faker = Faker\Factory::create('fr_FR');
-    echo $faker->word;
-    for ($i = 0; $i <= 1000; $i++) {
-        $sql = "insert into category (Name) values (:Name)";
-            try {
-                $sth = $dbh->prepare($sql);
-                $sth->execute(array(":Name"=>$faker->word));
-            } catch (PDOException $e) {
-                die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-            }
-    }
+    
     // Instance
     // for ($i = 0; $i <= 10; $i++) {
     //     $sql = "insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
