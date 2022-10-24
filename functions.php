@@ -65,6 +65,7 @@ function createProduct($dbh, $faker, $nbCategoryId)
       die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
   }
 }
+//ok | once categories done
 
 //Create All Product's categories
 function createCategories($dbh, $faker)
@@ -80,32 +81,71 @@ function createCategories($dbh, $faker)
         }
   }
 }
+//ok
 
-//
-function createPhotoP($dbh, $faker, $nbProductId)
+//Create a photo Corresponding to a Product
+function createPhotosP($dbh, $faker, $nbProductId)
 {
   //Primary Key : PhotoId
-  $sql = "insert into photop (ProductId, Link) values (:ProductId, :Link)";
-      try {
-          $sth = $dbh->prepare($sql);
-          $sth->execute(array(":ProductId"=>random_int(1, $nbProductId), "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
-      } catch (PDOException $e) {
-          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-      }
+  for ($i = 1; $i <= $nbProductId; $i++) {
+    $sql = "insert into photop (ProductId, Link) values (:ProductId, :Link)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":ProductId"=>$i, "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
 }
+//ok | once products done
 
+//Create a photo Corresponding to a Customer
 function createPhotoU($dbh, $faker, $nbCustomerId)
 {
   //Primary Key : PhotoId
-  $sql = "insert into photou (CustomerId, Link) values (:CustomerId, :Link)";
-      try {
-          $sth = $dbh->prepare($sql);
-          $sth->execute(array(":CustomerId"=>random_int(1, $nbCustomerId), "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
-      } catch (PDOException $e) {
-          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-      }
+  for ($i = 1; $i <= $nbCustomerId; $i++) {
+    $sql = "insert into photop (CustomerId, Link) values (:CustomerId, :Link)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":CustomerId"=>$i, "Link"=>$faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg')));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
 }
+//ok | once customers done
 
+//Create a payment method
+function createPaymentMethod($dbh, $faker, $customerId)
+{
+  for ($i = 0; $i <= $customerId; $i++) {
+    $sql = "insert into payment (Name) values (:Name)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":Name"=>$faker->word));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
+}
+//not ok | once customers done
+
+//Setup card
+function createCard($dbh, $faker, $paymentId, $customerId)
+{
+  for ($i = 0; $i <= $customerId; $i++) {
+    $sql = "insert into payment (Name) values (:Name)";
+        try {
+            $sth = $dbh->prepare($sql);
+            $sth->execute(array(":Name"=>$faker->word));
+        } catch (PDOException $e) {
+            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+        }
+  }
+}
+//not ok | once payment done and customers done
+
+//Create a command
 function createCommand($dbh, $faker, $customerId)
 {
   for ($i = 0; $i <= 20; $i++) {
@@ -118,6 +158,7 @@ function createCommand($dbh, $faker, $customerId)
         }
   }
 }
+//not ok
 
 function fillCustomer() 
 {
