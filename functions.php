@@ -119,46 +119,91 @@ function createPhotoU($dbh, $faker, $nbCustomerId)
 function createPaymentMethod($dbh, $faker, $customerId)
 {
   for ($i = 0; $i <= $customerId; $i++) {
-    $sql = "insert into payment (Name) values (:Name)";
-        try {
-            $sth = $dbh->prepare($sql);
-            $sth->execute(array(":Name"=>$faker->word));
-        } catch (PDOException $e) {
-            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-        }
+    $sql = "insert into payment (CustomerId, PaymentMethod, PaymentAdress) values (:CustomerId, :PaymentMethod, :PaymentAdress)";
+    try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":CustomerId" => $customerId, ":PaymentMethod" => "Card", ":PaymentAdress" => $faker->streetAddress));
+    } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    }
   }
 }
-//not ok | once customers done
+// to test | once customers done
 
 //Setup card
 function createCard($dbh, $faker, $paymentId, $customerId)
 {
   for ($i = 0; $i <= $customerId; $i++) {
-    $sql = "insert into payment (Name) values (:Name)";
-        try {
-            $sth = $dbh->prepare($sql);
-            $sth->execute(array(":Name"=>$faker->word));
-        } catch (PDOException $e) {
-            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-        }
+    $sql = "insert into card (CustomerId, PaymentId, CardOwner, CardNumber, ExpirationDate, CVV) values (:CustomerId, :PaymentId, :CardId, :CardOwner, :CardNumber, :ExpirationDate, :CVV)";
+    try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":CustomerId" => $customerId, ":PaymentId" => $paymentId, ":CardOwner" => $faker->name, ":CardNumber" => $faker->creditCardNumber, ":ExpirationDate" => $faker->creditCardExpirationDate, ":CVV" => random_int(100, 1000)));
+    } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    }
   }
 }
-//not ok | once payment done and customers done
+// to test | once customers and paymentMethod done 
 
-//Create a command
-function createCommand($dbh, $faker, $customerId)
+//Create Addresses
+function createAdresses($dbh, $faker)
+{
+  for ($i = 0; $i < 1000; $i++) {
+    $sql = "insert into address (AddressNumber, AddressName, ZipCode, Region, Country, FirstName, LastName) values (:AddressNumber, :AddressName, :ZipCode, :Region, :Country, :FirstName, :LastName)";
+      try {
+          $sth = $dbh->prepare($sql);
+          $sth->execute(array(":AddressNumber"=>random_int(1, 300), ":AddressName"=>$faker->streetName(), ":ZipCode"=> $faker->postcode(), ":Region"=>$faker->region(), ":Country"=> $faker->country(), ":FirstName"=>$faker->firstName(), ":LastName"=>$faker->lastName()));
+      } catch (PDOException $e) {
+          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
+  }
+}
+//ok | before filling customer_address 
+
+//Create customer_Addresses
+function createCustomerAdresses($dbh, $faker, $customerId, $addressId)
+{
+  for ($i = 0; $i < 1000; $i++) {
+    $sql = "insert into customer_address (AddressId, CustomerId) values (:AddressId, :CustomerId)";
+      try {
+          $sth = $dbh->prepare($sql);
+          $sth->execute(array(":AddressId"=>random_int(1, $addressId),":AddressId"=>random_int(1, $customerId)));
+      } catch (PDOException $e) {
+          die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
+  }
+}
+//ok | once filling customers and addresses
+
+//Create a command_product
+function createCommandProduct($dbh, $nbProductId, $nbCommand)
 {
   for ($i = 0; $i <= 20; $i++) {
-    $sql = "insert into category (Name) values (:Name)";
-        try {
-            $sth = $dbh->prepare($sql);
-            $sth->execute(array(":Name"=>$faker->word));
-        } catch (PDOException $e) {
-            die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-        }
+    $sql = "insert into command_product ( ProductId,CustomerId, Quantity) values ( :ProductId, :CustomerId, :Quantity )";
+    try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":ProductId" => random_int(1, $nbProductId),  ":CommandId" => random_int(1, $nbCommand), ":Quantity" => random_int(1, 10)));
+    } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    }
   }
 }
-//not ok
+// oké | once command and product done 
+
+//Create a command
+function createCommand($dbh, $nbCustomerId)
+{
+  for ($i = 0; $i <= 20; $i++) {
+    $sql = "insert into command (Customerid) values (:CustomerId)";
+    try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":CustomerId" => random_int(1, $nbCustomerId)));
+    } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    }
+  }
+}
+// to test
 
 function fillCustomer() 
 {

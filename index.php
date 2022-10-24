@@ -32,7 +32,8 @@ try {
 <?php
     // Instance
     $faker = Faker\Factory::create('fr_FR');
-    echo $faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg');
+    // echo $faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg');
+    echo $faker->postcode();
     // fillCustomer();
 // if (count($rows)>0) {
 //     echo '<table>';
