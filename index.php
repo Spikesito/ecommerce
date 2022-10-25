@@ -1,12 +1,12 @@
 <?php
 include("functions.php");
-include ('functions/db_functions.php');
+include('functions/db_functions.php');
 
 require 'vendor/autoload.php';
 
 
 // Connexion à la base
-$dbh=db_connect();
+$dbh = db_connect();
 
 
 
@@ -22,35 +22,37 @@ try {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<?php
+    <?php
     // Instance
     $faker = Faker\Factory::create('fr_FR');
     // echo $faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg');
-    echo $faker->postcode();
+    echo $faker->email . "aaaaa" . $faker->creditCardExpirationDate->format('Y-m');
     // fillCustomer();
-// if (count($rows)>0) {
-//     echo '<table>';
-//     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
-//     foreach ($rows as $row) {
-//         echo '<tr>';
-//         echo '<td>'.$row['LastName'].'</td>';
-//         echo '<td>'.$row['FirstName'].'</td>';
-//         echo '<td>'.$row['PhoneNumber'].'</td>';
-//         echo '<td>'.$row['Email'].'</td>';
-//         echo "</tr>";
-//     }
-//     echo "</table>";
-// } else {
-//     echo "<p>Rien à afficher</p>";
-// }
-?>
+    // if (count($rows)>0) {
+    //     echo '<table>';
+    //     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
+    //     foreach ($rows as $row) {
+    //         echo '<tr>';
+    //         echo '<td>'.$row['LastName'].'</td>';
+    //         echo '<td>'.$row['FirstName'].'</td>';
+    //         echo '<td>'.$row['PhoneNumber'].'</td>';
+    //         echo '<td>'.$row['Email'].'</td>';
+    //         echo "</tr>";
+    //     }
+    //     echo "</table>";
+    // } else {
+    //     echo "<p>Rien à afficher</p>";
+    // }
+    ?>
 </body>
 
 </html>

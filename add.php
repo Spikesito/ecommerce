@@ -1,39 +1,39 @@
 <?php
- /* Exemple d'écriture des pages visitées dans un fichier log 
+/* Exemple d'écriture des pages visitées dans un fichier log 
  */
 include("functions.php");
 ?><?php
- /* Ajout d'un film
+  /* Ajout d'un film
  */
-include 'functions/db_functions.php';
-// Connexion à la base
-$dbh=db_connect();
+  include 'functions/db_functions.php';
+  // Connexion à la base
+  $dbh = db_connect();
 
-// Lecture du formulaire
-$LastName = isset($_POST['LastName']) ? $_POST['LastName'] : '';
-$FirstName = isset($_POST['FirstName']) ? $_POST['FirstName'] : '';
-$PhoneNumber = isset($_POST['PhoneNumber']) ? $_POST['PhoneNumber'] : '';
-$Email = isset($_POST['Email']) ? $_POST['Email'] : '';
+  // Lecture du formulaire
+  $LastName = isset($_POST['LastName']) ? $_POST['LastName'] : '';
+  $FirstName = isset($_POST['FirstName']) ? $_POST['FirstName'] : '';
+  $PhoneNumber = isset($_POST['PhoneNumber']) ? $_POST['PhoneNumber'] : '';
+  $Email = isset($_POST['Email']) ? $_POST['Email'] : '';
 
 
-$submit = isset($_POST['submit']);
+  $submit = isset($_POST['submit']);
 
-// Ajout dans la base
-if ($submit) {
-    $sql="insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
+  // Ajout dans la base
+  if ($submit) {
+    $sql = "insert into customer (LastName,FirstName,PhoneNumber,Email) values (:LastName,:FirstName,:PhoneNumber,:Email)";
     try {
-        $sth = $dbh->prepare($sql);
-        $sth->execute(array(":LastName"=>$LastName,":FirstName"=>$FirstName,":PhoneNumber"=>$PhoneNumber, ":Email"=>$Email));
-        $nb = $sth->rowcount();
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":LastName" => $LastName, ":FirstName" => $FirstName, ":PhoneNumber" => $PhoneNumber, ":Email" => $Email));
+      $nb = $sth->rowcount();
     } catch (PDOException $e) {
-        die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
     }
-    $message="$nb customer added";
-} else {
-    $message="Select a customer";
-}
-// Affichage
-?>
+    $message = "$nb customer added";
+  } else {
+    $message = "Select a customer";
+  }
+  // Affichage
+  ?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -46,7 +46,7 @@ if ($submit) {
 </head>
 
 <body>
-  <p><?php echo $message; ?>
+  <p><?php echo $faker->email . $faker->creditCardExpirationDate; ?>
   </p>
   <!-- <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
     <p>LastName<br /><input name="LastName" id="LastName" type="text" value="" /></p>

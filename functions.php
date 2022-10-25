@@ -53,25 +53,26 @@ function logToDisk($page)
 
   //Functions Used to generate each part of the DB
 
-  //Insert One product
-  function createProduct($dbh, $faker, $nbCategoryId)
+  //create Customers
+  function createCustomer($dbh, $faker, $nbCustomerId)
   {
-    //Primary Key : ProductId
-    $sql = "insert into product (Name, Price, CreationDate, Supplier, Stock, CategoryId) values (:Name, :Price, :CreationDate, :Supplier, :Stock, :CategoryId)";
-    try {
-      $sth = $dbh->prepare($sql);
-      $sth->execute(array(":Name" => $faker->word, ":Price" => $faker->rand_float(1, 100), ":CreationDate" => $faker->date(), ":Supplier" => $faker->word, ":Stock" => random_int(1, 100), ":CategoryId" => random_int(1, $nbCategoryId)));
-    } catch (PDOException $e) {
-      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    for ($i = 0; $i < $nbCustomerId; $i++) {
+      $sql = "insert into category (LastName, FirstName, PhoneNumber, Email) values (:LastName, :FirstName, :PhoneNumber, :Email)";
+      try {
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(":LastName" => $faker->lastName, ":FirstName" => $faker->firstName, ":PhoneNumber" => $faker->phoneNumber, ":Email" => $faker->email));
+      } catch (PDOException $e) {
+        die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
     }
   }
-  //ok | once categories done
+  //ok
 
   //Create All Product's categories
   function createCategories($dbh, $faker)
   {
     //Primary Key : CategoryId
-    for ($i = 0; $i <= 30; $i++) {
+    for ($i = 0; $i < 1000; $i++) {
       $sql = "insert into category (Name) values (:Name)";
       try {
         $sth = $dbh->prepare($sql);
@@ -82,6 +83,21 @@ function logToDisk($page)
     }
   }
   //ok
+
+  //Insert One product
+  function createProduct($dbh, $faker, $nbCategoryId)
+  {
+    //Primary Key : ProductId
+    $sql = "insert into product (Name, Price, CreationDate, Supplier, Stock, CategoryId) values (:Name, :Price, :CreationDate, :Supplier, :Stock, :CategoryId)";
+    try {
+      $sth = $dbh->prepare($sql);
+      $sth->execute(array(":Name" => $faker->word, ":Price" => $faker->rand_float(1, 100), ":CreationDate" => $faker->date(), ":Supplier" => $faker->word, ":Stock" => random_int(0, 300), ":CategoryId" => random_int(1, $nbCategoryId)));
+    } catch (PDOException $e) {
+      die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+    }
+  }
+  //ok | once categories done
+
 
   //Create a photo Corresponding to a Product
   function createPhotosP($dbh, $faker, $nbProductId)
@@ -116,13 +132,13 @@ function logToDisk($page)
   //ok | once customers done
 
   //Create a payment method
-  function createPaymentMethod($dbh, $faker, $customerId)
+  function createPaymentMethod($dbh, $faker, $nbCustomerId)
   {
-    for ($i = 0; $i <= $customerId; $i++) {
+    for ($i = 1; $i <= $nbCustomerId; $i++) {
       $sql = "insert into payment (CustomerId, PaymentMethod, PaymentAdress) values (:CustomerId, :PaymentMethod, :PaymentAdress)";
       try {
         $sth = $dbh->prepare($sql);
-        $sth->execute(array(":CustomerId" => $customerId, ":PaymentMethod" => "Card", ":PaymentAdress" => $faker->streetAddress));
+        $sth->execute(array(":CustomerId" => $i, ":PaymentMethod" => "Card", ":PaymentAdress" => $faker->streetAddress));
       } catch (PDOException $e) {
         die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
       }
@@ -131,13 +147,13 @@ function logToDisk($page)
   // to test | once customers done
 
   //Setup card
-  function createCard($dbh, $faker, $paymentId, $customerId)
+  function createCard($dbh, $faker, $nbCustomerId)
   {
-    for ($i = 0; $i <= $customerId; $i++) {
+    for ($i = 1; $i <= $nbCustomerId; $i++) {
       $sql = "insert into card (CustomerId, PaymentId, CardOwner, CardNumber, ExpirationDate, CVV) values (:CustomerId, :PaymentId, :CardId, :CardOwner, :CardNumber, :ExpirationDate, :CVV)";
       try {
         $sth = $dbh->prepare($sql);
-        $sth->execute(array(":CustomerId" => $customerId, ":PaymentId" => $paymentId, ":CardOwner" => $faker->name, ":CardNumber" => $faker->creditCardNumber, ":ExpirationDate" => $faker->creditCardExpirationDate, ":CVV" => random_int(100, 1000)));
+        $sth->execute(array(":CustomerId" => $i, ":PaymentId" => $i, ":CardOwner" => $faker->name, ":CardNumber" => $faker->creditCardNumber, ":ExpirationDate" => $faker->creditCardExpirationDate->format('Y-m'), ":CVV" => random_int(100, 1000)));
       } catch (PDOException $e) {
         die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
       }
@@ -146,9 +162,9 @@ function logToDisk($page)
   // to test | once customers and paymentMethod done 
 
   //Create Addresses
-  function createAdresses($dbh, $faker)
+  function createAddresses($dbh, $faker, $nb)
   {
-    for ($i = 0; $i < 1000; $i++) {
+    for ($i = 0; $i < $nb; $i++) {
       $sql = "insert into address (AddressNumber, AddressName, ZipCode, Region, Country, FirstName, LastName) values (:AddressNumber, :AddressName, :ZipCode, :Region, :Country, :FirstName, :LastName)";
       try {
         $sth = $dbh->prepare($sql);
@@ -161,19 +177,34 @@ function logToDisk($page)
   //ok | before filling customer_address 
 
   //Create customer_Addresses
-  function createCustomerAdresses($dbh, $faker, $customerId, $addressId)
+  function createCustomerAddresses($dbh,  $nbAddressId, $nbCustomerId)
   {
-    for ($i = 0; $i < 1000; $i++) {
+    for ($i = 0; $i < $nbCustomerId; $i++) {
       $sql = "insert into customer_address (AddressId, CustomerId) values (:AddressId, :CustomerId)";
       try {
         $sth = $dbh->prepare($sql);
-        $sth->execute(array(":AddressId" => random_int(1, $addressId), ":AddressId" => random_int(1, $customerId)));
+        $sth->execute(array(":AddressId" => random_int(1, $nbAddressId), ":CustomerId" => random_int(1, $nbCustomerId)));
       } catch (PDOException $e) {
         die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
       }
     }
   }
   //ok | once filling customers and addresses
+
+  //Create a command
+  function createCommand($dbh, $nbCustomerId, $nb)
+  {
+    for ($i = 0; $i < $nb; $i++) {
+      $sql = "insert into command (CustomerId) values (:CustomerId)";
+      try {
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(":CustomerId" => random_int(1, $nbCustomerId)));
+      } catch (PDOException $e) {
+        die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
+      }
+    }
+  }
+  // to test
 
   //Create a command_product
   function createCommandProduct($dbh, $nbProductId, $nbCommand)
@@ -190,24 +221,9 @@ function logToDisk($page)
   }
   // oké | once command and product done 
 
-  //Create a command
-  function createCommand($dbh, $nbCustomerId)
-  {
-    for ($i = 0; $i <= 20; $i++) {
-      $sql = "insert into command (CustomerId) values (:CustomerId)";
-      try {
-        $sth = $dbh->prepare($sql);
-        $sth->execute(array(":CustomerId" => random_int(1, $nbCustomerId)));
-      } catch (PDOException $e) {
-        die("<p>Erreur lors de la requête SQL : " . $e->getMessage() . "</p>");
-      }
-    }
-  }
-  // to test
-
   function createInvoices($dbh, $faker, $nbCustomerId, $nbProductId)
   {
-    for ($i = 0; $i <= 20; $i++) {
+    for ($i = 0; $i <= 1000; $i++) {
       $sql = "insert into command (CustomerId, ProductId,CommandNumber,Quantity) values (:Customerid, :ProductId,:CommandNumber,:Quantity)";
       try {
         $sth = $dbh->prepare($sql);
@@ -220,9 +236,9 @@ function logToDisk($page)
   // to test
 
   //Create a command
-  function createRate($dbh, $faker, $nbCustomerId, $nbProductId)
+  function createRate($dbh, $faker, $nbCustomerId, $nbProductId, $nb)
   {
-    for ($i = 0; $i <= 20; $i++) {
+    for ($i = 0; $i < $nb; $i++) {
       $sql = "insert into command (CustomerId, ProductId, Rate,Text) values (:CustomerId, :ProductId, :Rate,:Text)";
       try {
         $sth = $dbh->prepare($sql);
@@ -236,9 +252,26 @@ function logToDisk($page)
 
   function fillDB()
   {
-    $dbh = db_connect();
-    $faker = Faker\Factory::create('fr_FR');
-    
+    $DBH = db_connect();
+    $FAKER = Faker\Factory::create('fr_FR');
+    $NB_CUSTOMER = random_int(1000, 3000);
+    $NB_ADDRESS = random_int(1000, 1100);
+    $NB_PRODUCT = 1000;
+    $NB_CATEGORY = 1000;
+    $NB_RATE = 10000;
+    $NB_COMMAND = 3000;
 
+    createCustomer($DBH, $FAKER, $NB_CUSTOMER);
+    createAddresses($DBH, $FAKER, $NB_ADDRESS);
+    createCustomerAddresses($DBH, $NB_ADDRESS, $NB_CUSTOMER);
+    createPaymentMethod($DBH, $FAKER, $NB_CUSTOMER);
+    createCard($DBH, $FAKER, $NB_CUSTOMER);
+    createPhotoU($DBH, $FAKER, $NB_CUSTOMER);
+
+    createCategories($DBH, $FAKER, $NB_CATEGORY);
+    createProduct($DBH, $FAKER, $NB_CATEGORY);
+    createRate($DBH, $FAKER, $NB_CUSTOMER, $NB_PRODUCT, $NB_RATE);
+    createCommand($DBH, $NB_CUSTOMER, $NB_COMMAND);
+    createCommandProduct($DBH, $FAKER, $NB_PRODUCT, $NB_COMMAND);
   }
 }
