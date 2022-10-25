@@ -3,7 +3,7 @@
 // Connexion à la base de données
 //
 function db_connect() {
-  $dsn = 'mysql:host=localhost;dbname=e commerce';  // contient le nom du serveur et de la base
+  $dsn = 'mysql:host=localhost;dbname=ecommerce';  // contient le nom du serveur et de la base
   $user = 'root';
   $password = '';
   try {
