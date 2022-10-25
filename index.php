@@ -33,23 +33,25 @@ try {
     // Instance
     $faker = Faker\Factory::create('fr_FR');
     // echo $faker->imageUrl(360, 360, 'animals', true, 'dogs', true, 'jpg');
-    echo $faker->postcode();
+    fillDB();
     // fillCustomer();
-// if (count($rows)>0) {
-//     echo '<table>';
-//     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
-//     foreach ($rows as $row) {
-//         echo '<tr>';
-//         echo '<td>'.$row['LastName'].'</td>';
-//         echo '<td>'.$row['FirstName'].'</td>';
-//         echo '<td>'.$row['PhoneNumber'].'</td>';
-//         echo '<td>'.$row['Email'].'</td>';
-//         echo "</tr>";
-//     }
-//     echo "</table>";
-// } else {
-//     echo "<p>Rien à afficher</p>";
-// }
+    // echo $faker -> zipcode();
+    // echo $faker->uuid();
+    // if (count($rows)>0) {
+    //     echo '<table>';
+    //     echo '<tr><th>LastName</th><th>FirstName</th><th>PhoneNumber</th><th>Email</th></tr>';
+    //     foreach ($rows as $row) {
+    //         echo '<tr>';
+    //         echo '<td>'.$row['LastName'].'</td>';
+    //         echo '<td>'.$row['FirstName'].'</td>';
+    //         echo '<td>'.$row['PhoneNumber'].'</td>';
+    //         echo '<td>'.$row['Email'].'</td>';
+    //         echo "</tr>";
+    //     }
+    //     echo "</table>";
+    // } else {
+    //     echo "<p>Rien à afficher</p>";
+    // }
 ?>
 </body>
 
