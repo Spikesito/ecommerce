@@ -1,44 +1,6 @@
 <?php
 require 'vendor/autoload.php';
 
-/* Ecrit dans une log dans le dossier courant
- *
- * @param string $page le nom de la page PHP
- * @return void
- */
-// function logToDisk($page)
-// {
-  // Horodatage
-  //   $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
-  //   $laDate = $date->format("Y-m-d H:i:s.u");
-  //   $root = dirname(FILE); // Dossier courant
-  //   //$message = $laDate . ";" . $_SERVER['REMOTE_ADDR'] . ";" . $page . ";" . PHP_EOL;
-  //   $message = $laDate . ";" . get_ip() . ";" . $page . PHP_EOL;
-  //   $filename = $root . DIRECTORY_SEPARATOR . 'logs/log.txt';
-  //   file_put_contents($filename, $message, FILE_APPEND);
-  // }
-
-
-  /* Retourne une adresse IP
- *
- * @return void
- */
-  // function get_ip()
-  // {
-  //   $ip = $_SERVER['HTTP_CLIENT_IP']
-  //     ?? $_SERVER["HTTP_CF_CONNECTING_IP"] # when behind cloudflare
-  //     ?? $_SERVER['HTTP_X_FORWARDED']
-  //     ?? $_SERVER['HTTP_X_FORWARDED_FOR']
-  //     ?? $_SERVER['HTTP_FORWARDED']
-  //     ?? $_SERVER['HTTP_FORWARDED_FOR']
-  //     ?? $_SERVER['REMOTE_ADDR']
-  //     ?? '0.0.0.0';
-  //   return $ip;
-  // }
-
-
-
-
   //FILL DATABASE functions
 
   //Function Used to generate Random Float
@@ -66,7 +28,6 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok
 
   //Create All Product's categories
   function createCategories($dbh, $faker)
@@ -82,7 +43,6 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok
 
   //Insert One product
   function createProduct($dbh, $faker, $nbCategoryId, $nb)
@@ -98,7 +58,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok | once categories done
+  // once categories done
 
 
   //Create a photo Corresponding to a Product
@@ -115,7 +75,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok | once products done
+  // once products done
 
   //Create a photo Corresponding to a Customer
   function createPhotoU($dbh, $faker, $nbCustomerId)
@@ -131,7 +91,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok | once customers done
+  // once customers done
 
   //Create a payment method
   function createPaymentMethod($dbh, $faker, $nbCustomerId)
@@ -146,7 +106,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // to test | once customers done
+  // once customers done
 
   //Setup card
   function createCard($dbh, $faker, $nbCustomerId)
@@ -161,7 +121,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // to test | once customers and paymentMethod done 
+  // once customers and paymentMethod done 
 
   //Create Addresses
   function createAddresses($dbh, $faker, $nb)
@@ -176,7 +136,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok | before filling customer_address 
+  // before filling customer_address 
 
   //Create customer_Addresses
   function createCustomerAddresses($dbh, $nbCustomerId)
@@ -191,7 +151,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  //ok | once filling customers and addresses
+  // once filling customers and addresses
 
   //Create a command
   function createCommand($dbh, $nb)
@@ -206,7 +166,6 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // to test
 
   //Create a command_product
   function createCommandProduct($dbh, $nbProductId, $nbCommand)
@@ -221,7 +180,7 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // oké | once command and product done 
+  // once command and product done 
 
   function createInvoices($dbh, $faker, $nbCustomerId, $nbProductId, $nb)
   {
@@ -235,7 +194,6 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // to test
 
   //Create a command
   function createRate($dbh, $faker, $nbCustomerId, $nbProductId, $nb)
@@ -250,8 +208,10 @@ require 'vendor/autoload.php';
       }
     }
   }
-  // to test
 
+
+  // Final function calling every functions in correct order
+  // You can add much more data if you want ;D
   function fillDB()
   {
     $DBH = db_connect();
